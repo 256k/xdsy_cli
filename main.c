@@ -8,6 +8,8 @@ struct entry {
 	struct tm date;
 };
 
+#define MAX_LABEL_LENGTH 60
+
 // global variable definitions
 struct entry list[100];
 int list_length = 0;
@@ -39,22 +41,20 @@ void print_list(struct entry* list, int* list_length) {
 	printf("==============\n");
 	for (int i = 0; i < *list_length; i++) {
 		printf("[%d] days since ", i);
-		printf("%s\n", list[i].label);
+		printf("%s", list[i].label);
 	}
 	printf("==============\n");
 };
 
 void prompt_user() {
-	char input_text[40];
+	char input_text[MAX_LABEL_LENGTH ];
 	printf("> ");
-	fgets(input_text, 40, stdin);
-		printf("input_text: %s\n", input_text);
+	fgets(input_text, MAX_LABEL_LENGTH , stdin);
+	printf("added: %s\n", input_text);
 	if (input_text[0] == '/') {
 		// run command function
 		print_list(list, &list_length);
 	} else {
-		// printf("run new entry function\n");
-		// run new entry function
 		new_entry(input_text, list, &list_length);
 	}
 	prompt_user();
@@ -63,11 +63,15 @@ void prompt_user() {
 
 int main(int argc, char *argv[]) {
 
-	char input_text[40];
 	welcome_message();
 	prompt_user();
-	print_list(list, &list_length);
+};
+
+
+
+
+
+
   // time_t t = time(NULL);
   // struct tm tm = *localtime(&t);
   // printf("now: %d-%02d-%02d %02d:%02d:%02d\n", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-};
