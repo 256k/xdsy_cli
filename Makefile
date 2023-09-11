@@ -1,5 +1,5 @@
 output: main.o
-	gcc main.o -o output
+	gcc main.o -o xdsy
 
 
 main.o: main.c
