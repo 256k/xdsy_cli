@@ -5,7 +5,7 @@
 // type definitions
 struct entry {
   char *label;
-  struct tm date;
+  time_t date;
 };
 
 #define MAX_LABEL_LENGTH 60
@@ -23,10 +23,9 @@ void welcome_message() {
   printf("\n");
 };
 
-struct tm getDate() {
+time_t getDate() {
   time_t t = time(NULL);
-  struct tm tm = *localtime(&t);
-  return tm;
+  return t;
 };
 
 void new_entry(char* entry_label, struct entry* list, int* list_length) {
@@ -40,7 +39,7 @@ void new_entry(char* entry_label, struct entry* list, int* list_length) {
 void print_list(struct entry* list, int* list_length) {
   printf("==============\n");
   for (int i = 0; i < *list_length; i++) {
-    printf("[%d] days since ", i);
+    printf("[%jd] days since ", list[i].date);
     printf("%s", list[i].label);
   }
   printf("==============\n");
@@ -50,11 +49,11 @@ void prompt_user() {
   char input_text[MAX_LABEL_LENGTH ];
   printf("> ");
   fgets(input_text, MAX_LABEL_LENGTH , stdin);
-  printf("added: %s\n", input_text);
   if (input_text[0] == '/') {
     // run command function
     print_list(list, &list_length);
   } else {
+  printf("added: %s\n", input_text);
     new_entry(input_text, list, &list_length);
   }
   prompt_user();
